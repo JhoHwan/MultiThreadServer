@@ -129,12 +129,14 @@
   <ItemGroup>
     <ClCompile Include="BufferReader.cpp" />
     <ClCompile Include="BufferWriter.cpp" />
+    <ClCompile Include="ConnectPacket.cpp" />
     <ClCompile Include="Packet.cpp" />
     <ClCompile Include="PK_DATA.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BufferReader.h" />
     <ClInclude Include="BufferWriter.h" />
+    <ClInclude Include="ConnectPacket.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="Packet_Include.h" />
     <ClInclude Include="PK_DATA.h" />

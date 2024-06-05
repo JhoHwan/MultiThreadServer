@@ -43,9 +43,13 @@ private:
 	void CreateClientThread(const SOCKET& clientSock);
 	void ProcessPacket(const SOCKET& clientSock, const char* buffer);
 	void ProcessPK_DATA(const SOCKET& clientSock, const char* buffer);
+	void ProcessReq_con(const SOCKET& clientSock, const char* buffer);
 
 private:
 	SOCKET serverSocket;
+
+	BufferReader reader;
+	BufferWriter writer;
 
 	std::map<EPacketType, std::function<void(const SOCKET&, const char*)>> packetFuncMap;
 };

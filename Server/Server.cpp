@@ -170,7 +170,6 @@ void Server::ProcessPacket(const SOCKET& clientSock, const char* buffer)
 
 void Server::ProcessPK_DATA(const SOCKET& clientSock, const char* buffer)
 {
-    BufferReader reader;
     PK_DATA recvPacket;
 
     SOCKADDR_IN clientaddr;
@@ -203,5 +202,10 @@ void Server::ProcessPK_DATA(const SOCKET& clientSock, const char* buffer)
     }
 
     return;
+}
+
+void Server::ProcessReq_con(const SOCKET& clientSock, const char* buffer)
+{
+    ConnectPacket packet();
 }
 

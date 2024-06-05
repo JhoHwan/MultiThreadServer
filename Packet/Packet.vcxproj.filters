@@ -13,28 +13,31 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\Packet">
+      <UniqueIdentifier>{ae99f5a5-96dc-4908-9d7b-e08ca92fb0af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Packet">
+      <UniqueIdentifier>{85aeb0aa-4f92-4997-ade8-28f82505459c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PK_DATA.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Packet.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="BufferReader.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="BufferWriter.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Packet.cpp">
+      <Filter>소스 파일\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="PK_DATA.cpp">
+      <Filter>소스 파일\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnectPacket.cpp">
+      <Filter>소스 파일\Packet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PK_DATA.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Packet.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="BufferReader.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -43,6 +46,15 @@
     </ClInclude>
     <ClInclude Include="Packet_Include.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PK_DATA.h">
+      <Filter>헤더 파일\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectPacket.h">
+      <Filter>헤더 파일\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Packet.h">
+      <Filter>헤더 파일\Packet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

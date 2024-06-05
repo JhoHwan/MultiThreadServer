@@ -3,12 +3,19 @@
 #include <iostream>
 #include <memory>
 
+#define DefaultPacketSize 5
+
 /// <summary>
 /// 패킷 종류 EnumType(char형)
 /// </summary>
 enum class EPacketType : char
 {
 	PK_DATA,
+	req_con,
+	ack_con,
+	ack_move,
+	req_move,
+	chat_string,
 	Invalid
 };
 
@@ -38,6 +45,7 @@ protected:
 	/// </summary>
 	/// <param name="buffer">패킷을 옮길 버퍼</param>
 	virtual void MakeDefaultBuffer(char* buffer) const;
+	inline void SetSize(unsigned short size) { header.size = size; }
 
 public :
 	Packet(PacketHeader header);
