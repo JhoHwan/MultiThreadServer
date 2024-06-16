@@ -52,6 +52,7 @@ void Client::Run()
     while (1)
     {
         std::cin >> in;
+        
         if (in == -1)
             break;
     }

@@ -107,10 +107,6 @@ void Server::Run()
         clientList.push_back(client_sock);
         Log(ELogTypes::Log, "현재 접속한 인원 수: %d", ++currentConnectedClient);
 
-        // 접속한 클라이언트 정보 출력
-        Log(ELogTypes::Log, "[클라이언트 접속] IP 주소=%s, 포트 번호=%d",
-            inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
-
         CreateClientThread(client_sock);
     }
 }

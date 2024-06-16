@@ -141,6 +141,7 @@
     <ClInclude Include="Packet.h" />
     <ClInclude Include="Packet_Include.h" />
     <ClInclude Include="PK_DATA.h" />
+    <ClInclude Include="Util.h" />
     <ClInclude Include="VarCharPacket.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
