@@ -7,6 +7,7 @@
 #include <iostream>
 #include <map>
 #include <functional>
+#include <thread>
 
 #include "Packet_Include.h"
 
@@ -24,6 +25,12 @@ private:
 
     std::map<EPacketType, std::function<void(const char*)>> packetFuncMap;
 
+private:
+    std::string userId;
+public:
+    inline void SetUserId(const std::string& newId) { userId = newId; }
+    inline const std::string& GetUserId() const { return userId; }
+
 public:
     Client();
 
@@ -35,8 +42,13 @@ public:
 
 private:
     void SendPacket(const Packet& packet);
-    void RecivePacket();
+    void PacketReciver();
+
+    std::thread packetReciveThread;
 
     void ProcessPK_DATA(const char* buffer);
+    void ProcessAck_con(const char* buffer);
+    void ProcessAck_discon(const char* buffer);
+
 };
 

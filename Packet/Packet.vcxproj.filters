@@ -33,8 +33,11 @@
     <ClCompile Include="PK_DATA.cpp">
       <Filter>소스 파일\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="ConnectPacket.cpp">
-      <Filter>소스 파일\Packet</Filter>
+    <ClCompile Include="VarCharPacket.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MovePacket.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,10 +53,13 @@
     <ClInclude Include="PK_DATA.h">
       <Filter>헤더 파일\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="ConnectPacket.h">
+    <ClInclude Include="Packet.h">
       <Filter>헤더 파일\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="Packet.h">
+    <ClInclude Include="VarCharPacket.h">
+      <Filter>헤더 파일\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="MovePacket.h">
       <Filter>헤더 파일\Packet</Filter>
     </ClInclude>
   </ItemGroup>

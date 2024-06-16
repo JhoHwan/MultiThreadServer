@@ -14,7 +14,7 @@ int main()
     }
     catch(const char* e)
     {
-        server.Log(Server::ELogTypes::Error, "e");
+        server.Log(Server::ELogTypes::Error, e);
     }
 
     server.DeInit();

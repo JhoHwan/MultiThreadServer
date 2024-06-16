@@ -20,7 +20,8 @@ bool Packet::IsValid(const char* buffer) const
 {
 	// 버퍼의 마지막 2바이트 읽어 앤드마크인지 확인
 	unsigned short end;
-	const char* temp = buffer + GetSize() - 2;	
+	unsigned short size = GetSize();
+	const char* temp = buffer + size - 2;	
 	memcpy(&end, temp, sizeof(unsigned short));
 
 	if (end == endMarker) return true;

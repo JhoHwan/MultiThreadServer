@@ -13,7 +13,7 @@
 #define BUFSIZE 512
 
 
-
+class Packet;
 enum class EPacketType : char;
 
 class Server
@@ -33,23 +33,27 @@ public:
 	void Run();
 	void DeInit();
 
-	void ProcessClient(const SOCKET& clientSocket);
+	void ProcessClient(const SOCKET clientSocket);
 	void Log(ELogTypes inLogType, const char* inLog, ...) const;
 
 	bool DebugMode;
 
 private:
+	void SendPacket(const SOCKET& clientSock, const Packet& packet);
 
 	void CreateClientThread(const SOCKET& clientSock);
 	void ProcessPacket(const SOCKET& clientSock, const char* buffer);
 	void ProcessPK_DATA(const SOCKET& clientSock, const char* buffer);
 	void ProcessReq_con(const SOCKET& clientSock, const char* buffer);
+	void ProcessReq_discon(const SOCKET& clientSock, const char* buffer);
+	void ProcessReq_move(const SOCKET& clientSock, const char* buffer);
 
 private:
+	unsigned int currentConnectedClient;
+
 	SOCKET serverSocket;
 
-	BufferReader reader;
-	BufferWriter writer;
-
 	std::map<EPacketType, std::function<void(const SOCKET&, const char*)>> packetFuncMap;
+
+	std::vector<SOCKET> clientList;
 };

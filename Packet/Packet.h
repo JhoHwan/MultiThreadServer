@@ -15,6 +15,8 @@ enum class EPacketType : char
 	ack_con,
 	ack_move,
 	req_move,
+	req_discon,
+	ack_discon,
 	chat_string,
 	Invalid
 };
@@ -35,7 +37,7 @@ struct PacketHeader
 /// </summary>
 class Packet
 {
-private:
+protected:
 	PacketHeader header;
 	const unsigned short endMarker;
 
@@ -53,8 +55,11 @@ public :
 
 	//Getter 함수
 	inline const PacketHeader& GetHeader() const { return header; }
+	inline void SetPacketType(EPacketType newPacketType) { header.type = newPacketType; }
+
 	inline EPacketType GetType() const { return header.type; }
 	inline unsigned short GetSize() const { return header.size; }
+
 
 	/// <summary>
 	/// buffer가 해당 패킷이 맞는지 확인하는 함수
