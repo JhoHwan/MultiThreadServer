@@ -18,13 +18,10 @@ void VarCharPacket::BufferToPacket(const char* inBuffer)
 	unsigned short bufferSize = 0;
 	memcpy(&bufferSize, inBuffer + 1, sizeof(unsigned short));
 	
-	char* bufferData = new char[bufferSize];
-	memcpy(bufferData, inBuffer + 3, bufferSize);
+	std::string bufferData(inBuffer + 3, bufferSize - DefaultPacketSize);
 
 	SetData(bufferData);
-	SetSize(bufferSize);
 
-	delete[] bufferData;
 }
 
 bool VarCharPacket::IsValid(const char* buffer) const

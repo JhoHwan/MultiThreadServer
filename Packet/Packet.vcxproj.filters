@@ -33,11 +33,29 @@
     <ClCompile Include="PK_DATA.cpp">
       <Filter>소스 파일\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="VarCharPacket.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="REQ_CON.cpp">
+      <Filter>소스 파일\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="MovePacket.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="ACK_CON.cpp">
+      <Filter>소스 파일\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="REQ_MOVE.cpp">
+      <Filter>소스 파일\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="ACK_DISCON.cpp">
+      <Filter>소스 파일\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="REQ_DISCON.cpp">
+      <Filter>소스 파일\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="ACK_MOVE.cpp">
+      <Filter>소스 파일\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="CHAT_MESSAGE.cpp">
+      <Filter>소스 파일\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="VarCharPacket.cpp">
+      <Filter>소스 파일\Packet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,11 +77,26 @@
     <ClInclude Include="VarCharPacket.h">
       <Filter>헤더 파일\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="MovePacket.h">
+    <ClInclude Include="REQ_MOVE.h">
       <Filter>헤더 파일\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="Util.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="REQ_CON.h">
+      <Filter>헤더 파일\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="REQ_DISCON.h">
+      <Filter>헤더 파일\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="ACK_CON.h">
+      <Filter>헤더 파일\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="ACK_DISCON.h">
+      <Filter>헤더 파일\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="CHAT_MESSAGE.h">
+      <Filter>헤더 파일\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="ACK_MOVE.h">
+      <Filter>헤더 파일\Packet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

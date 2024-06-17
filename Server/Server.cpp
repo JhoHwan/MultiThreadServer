@@ -9,6 +9,12 @@
 Server::Server() : currentConnectedClient(0)
 {
     memset(&serverSocket, 0, sizeof(SOCKET));
+
+    packetFuncMap.emplace(EPacketType::PK_DATA, std::bind(&Server::ProcessPK_DATA, this, std::placeholders::_1, std::placeholders::_2));
+    packetFuncMap.emplace(EPacketType::req_con, std::bind(&Server::ProcessREQ_CON, this, std::placeholders::_1, std::placeholders::_2));
+    packetFuncMap.emplace(EPacketType::req_discon, std::bind(&Server::ProcessReq_discon, this, std::placeholders::_1, std::placeholders::_2));
+    packetFuncMap.emplace(EPacketType::req_move, std::bind(&Server::ProcessREQ_MOVE, this, std::placeholders::_1, std::placeholders::_2));
+    packetFuncMap.emplace(EPacketType::chat_message, std::bind(&Server::ProcessCHAT_MESSAGE, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 void Server::Init()
@@ -52,10 +58,6 @@ void Server::Init()
     Log(ELogTypes::Log, "Server Init Success");
     Log(ELogTypes::Debug, "Debug Mode On!\n");
 
-    packetFuncMap.emplace(EPacketType::PK_DATA, std::bind(&Server::ProcessPK_DATA, this, std::placeholders::_1, std::placeholders::_2));
-    packetFuncMap.emplace(EPacketType::req_con, std::bind(&Server::ProcessReq_con, this, std::placeholders::_1, std::placeholders::_2));
-    packetFuncMap.emplace(EPacketType::req_discon, std::bind(&Server::ProcessReq_discon, this, std::placeholders::_1, std::placeholders::_2));
-    packetFuncMap.emplace(EPacketType::req_move, std::bind(&Server::ProcessReq_move, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 void Server::Log(ELogTypes inLogType, const char* inLog, ...) const
@@ -104,8 +106,6 @@ void Server::Run()
         if (client_sock == INVALID_SOCKET) {
             continue;
         }
-        clientList.push_back(client_sock);
-        Log(ELogTypes::Log, "현재 접속한 인원 수: %d", ++currentConnectedClient);
 
         CreateClientThread(client_sock);
     }
@@ -204,9 +204,9 @@ void Server::ProcessPK_DATA(const SOCKET& clientSock, const char* buffer)
     return;
 }
 
-void Server::ProcessReq_con(const SOCKET& clientSock, const char* buffer)
+void Server::ProcessREQ_CON(const SOCKET& clientSock, const char* buffer)
 {
-    VarCharPacket recvPacket(EPacketType::req_con, "");
+    REQ_CON recvPacket;
 
     BufferReader reader;
 
@@ -226,19 +226,25 @@ void Server::ProcessReq_con(const SOCKET& clientSock, const char* buffer)
     tm* curTime;
     curTime = localtime(&timer);
 
-    const std::string& data = recvPacket.GetData();
+    std::string data = recvPacket.GetData();
+
+    mapMutex.lock();
+    clientIdMap[clientSock] = data;
+    Log(ELogTypes::Log, "현재 접속한 인원 수: %d", ++currentConnectedClient);
+
 
     // 받은 데이터 출력
     Log(ELogTypes::Log, "%d년도 %d월 %d일 %d시 %d분 %d초, ID: %s connected!\n",
         curTime->tm_year + 1900, curTime->tm_mon + 1, curTime->tm_mday, curTime->tm_hour, curTime->tm_min, curTime->tm_sec, data.c_str());
 
     int packetSize = recvPacket.GetSize();
-    VarCharPacket packet(EPacketType::ack_con, data.c_str());
+    ACK_CON packet(data.c_str());
 
-    for (auto sock : clientList)
+    for (auto pair : clientIdMap)
     {
-        SendPacket(sock, packet);
+        SendPacket(pair.first, packet);
     }
+    mapMutex.unlock();
 
     return;
 }
@@ -272,36 +278,33 @@ void Server::ProcessReq_discon(const SOCKET& clientSock, const char* buffer)
         curTime->tm_year + 1900, curTime->tm_mon + 1, curTime->tm_mday, curTime->tm_hour, curTime->tm_min, curTime->tm_sec, data.c_str());
 
     int packetSize = recvPacket.GetSize();
-    VarCharPacket packet(EPacketType::ack_discon, data.c_str());
+    ACK_DISCON packet(data.c_str());
 
-    auto it = std::find(clientList.cbegin(), clientList.cend(), clientSock);
-    if (it == clientList.cend())
-        Log(ELogTypes::Error, "Error!");
-    else
-        clientList.erase(it);
+    auto it = clientIdMap.find(clientSock);
+    if (it != clientIdMap.cend())
+        clientIdMap.erase(it);
 
     // closesocket()
     closesocket(clientSock);
 
     Log(ELogTypes::Log, "현재 접속한 인원 수: %d", --currentConnectedClient);
 
-    for (auto sock : clientList)
+    mapMutex.lock();
+    for (auto pair : clientIdMap)
     {
-        SendPacket(sock, packet);
+        SendPacket(pair.first, packet);
     }
-
-
+    mapMutex.unlock();
 
     return;
 }
 
-void Server::ProcessReq_move(const SOCKET& clientSock, const char* buffer)
+void Server::ProcessREQ_MOVE(const SOCKET& clientSock, const char* buffer)
 {
     Vector3 pos;
-    MovePacket recvPacket(EPacketType::req_con, pos);
+    REQ_MOVE recvPacket;
 
     BufferReader reader;
-
 
     try
     {
@@ -315,9 +318,56 @@ void Server::ProcessReq_move(const SOCKET& clientSock, const char* buffer)
 
     Log(ELogTypes::Debug, "패킷 타입 : req_move");
 
-    pos = recvPacket.GetData();
-
-
+    pos = recvPacket.GetPos();
     int packetSize = recvPacket.GetSize();
+
+    SOCKADDR_IN clientaddr;
+    int addrlen = sizeof(SOCKADDR_IN);
+    getpeername(clientSock, (SOCKADDR*)&clientaddr, &addrlen);
+
+    mapMutex.lock();
+    std::string id = clientIdMap[clientSock];
+
+    ACK_MOVE packet(id, pos);
+
+    for (auto pair : clientIdMap)
+    {
+        if (pair.first == clientSock)
+            continue;
+        SendPacket(pair.first, packet);
+    }
+    mapMutex.unlock();
+
+
+    Log(ELogTypes::Log, "%s, moved to %d, %d, %d", id.c_str(), pos.x, pos.y, pos.z);
 }
 
+void Server::ProcessCHAT_MESSAGE(const SOCKET& clientSock, const char* buffer)
+{
+    CHAT_MESSAGE recvPacket;
+    BufferReader reader;
+
+    try
+    {
+        reader(buffer, &recvPacket);
+    }
+    catch (const char* e)
+    {
+        Log(ELogTypes::Error, "%s", e);
+        return;
+    }
+
+    std::cout << "[" << recvPacket.GetId() << "] send Message : " << recvPacket.GetMessageString() << std::endl;
+
+    mapMutex.lock();
+
+    for (auto pair : clientIdMap)
+    {
+        if (pair.first == clientSock)
+            continue;
+        SendPacket(pair.first, recvPacket);
+    }
+
+    mapMutex.unlock();
+
+}

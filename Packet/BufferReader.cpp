@@ -20,8 +20,8 @@ PacketHeader BufferReader::ReadHeader(const char* buffer)
 void BufferReader::operator()(const char* source, Packet* dest)
 {
 	//패킷 식별 오류 시 
-	if (!dest->IsValid(source)) 
-		throw "Packet is Invalid";
+	/*if (!dest->IsValid(source)) 
+		throw "Packet is Invalid";*/
 
 	dest->BufferToPacket(source);
 }

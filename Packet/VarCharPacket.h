@@ -11,8 +11,12 @@ private:
 public:
 	VarCharPacket(EPacketType inPacketType, std::string inData);
 
-	inline const std::string& GetData() const { return data; }
-	inline void SetData(std::string newData) { data = newData; }
+	virtual inline const std::string& GetData() const { return data; }
+	virtual inline void SetData(const std::string& newData) 
+	{
+		data = newData; 
+		SetSize(DefaultPacketSize + data.length() + 1);
+	}
 
 	virtual void PacketToBuffer(char* outBuffer) const override;
 	virtual void BufferToPacket(const char* inBuffer) override;

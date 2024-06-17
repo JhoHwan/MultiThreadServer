@@ -1,10 +1,14 @@
-#include "MovePacket.h"
+#include "REQ_MOVE.h"
 
-MovePacket::MovePacket(EPacketType type, Vector3 pos) : Packet(type, DefaultPacketSize + 12), pos(pos)
+REQ_MOVE::REQ_MOVE() : REQ_MOVE(Vector3())
 {
 }
 
-void MovePacket::PacketToBuffer(char* outBuffer) const
+REQ_MOVE::REQ_MOVE(const Vector3& pos) : Packet(EPacketType::req_move, DefaultPacketSize + 12), pos(pos)
+{
+}
+
+void REQ_MOVE::PacketToBuffer(char* outBuffer) const
 {
 	MakeDefaultBuffer(outBuffer);
 
@@ -13,7 +17,7 @@ void MovePacket::PacketToBuffer(char* outBuffer) const
 	memcpy(outBuffer + 3 + sizeof(int) * 2, &(pos.z), sizeof(int));
 }
 
-void MovePacket::BufferToPacket(const char* inBuffer)
+void REQ_MOVE::BufferToPacket(const char* inBuffer)
 {
 	int temp = 0;
 

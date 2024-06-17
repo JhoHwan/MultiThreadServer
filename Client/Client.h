@@ -25,6 +25,8 @@ private:
 
     std::map<EPacketType, std::function<void(const char*)>> packetFuncMap;
 
+    bool run;
+
 private:
     std::string userId;
 public:
@@ -47,8 +49,10 @@ private:
     std::thread packetReciveThread;
 
     void ProcessPK_DATA(const char* buffer);
-    void ProcessAck_con(const char* buffer);
-    void ProcessAck_discon(const char* buffer);
+    void ProcessACK_CON(const char* buffer);
+    void ProcessACK_DISCON(const char* buffer);
+    void ProcessACK_MOVE(const char* buffer);
+    void ProcessCHAT_MESSAGE(const char* buffer);
 
 };
 

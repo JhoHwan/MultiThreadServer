@@ -9,6 +9,7 @@ int main()
     std::string userId;
     std::cout << "[ID를 입력하세요] ";
     std::cin >> userId;
+    std::cin.ignore();
 
     client->SetUserId(userId);
 

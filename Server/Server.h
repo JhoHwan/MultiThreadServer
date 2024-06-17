@@ -6,6 +6,7 @@
 #include <winsock2.h>
 #include <vector>
 #include <thread>
+#include <mutex>
 #include <map>
 #include <functional>
 
@@ -44,9 +45,10 @@ private:
 	void CreateClientThread(const SOCKET& clientSock);
 	void ProcessPacket(const SOCKET& clientSock, const char* buffer);
 	void ProcessPK_DATA(const SOCKET& clientSock, const char* buffer);
-	void ProcessReq_con(const SOCKET& clientSock, const char* buffer);
+	void ProcessREQ_CON(const SOCKET& clientSock, const char* buffer);
 	void ProcessReq_discon(const SOCKET& clientSock, const char* buffer);
-	void ProcessReq_move(const SOCKET& clientSock, const char* buffer);
+	void ProcessREQ_MOVE(const SOCKET& clientSock, const char* buffer);
+	void ProcessCHAT_MESSAGE(const SOCKET& clientSock, const char* buffer);
 
 private:
 	unsigned int currentConnectedClient;
@@ -55,5 +57,6 @@ private:
 
 	std::map<EPacketType, std::function<void(const SOCKET&, const char*)>> packetFuncMap;
 
-	std::vector<SOCKET> clientList;
+	std::map<SOCKET, std::string> clientIdMap;
+	std::mutex mapMutex;
 };

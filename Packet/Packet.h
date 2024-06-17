@@ -10,6 +10,7 @@
 /// </summary>
 enum class EPacketType : char
 {
+	Invalid,
 	PK_DATA,
 	req_con,
 	ack_con,
@@ -17,8 +18,22 @@ enum class EPacketType : char
 	req_move,
 	req_discon,
 	ack_discon,
-	chat_string,
-	Invalid
+	chat_message,
+	
+};
+
+struct Vector3
+{
+	int x;
+	int y;
+	int z;
+
+	Vector3(int x = 0, int y = 0, int z = 0) : x(x), y(y), z(z) {}
+	Vector3 operator+(const Vector3& other)
+	{
+		Vector3 out(this->x + other.x, this->y + other.y, this->z + other.z);
+		return out;
+	}
 };
 
 /// <summary>

@@ -127,21 +127,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ACK_CON.cpp" />
+    <ClCompile Include="ACK_DISCON.cpp" />
+    <ClCompile Include="ACK_MOVE.cpp" />
     <ClCompile Include="BufferReader.cpp" />
     <ClCompile Include="BufferWriter.cpp" />
-    <ClCompile Include="MovePacket.cpp" />
+    <ClCompile Include="CHAT_MESSAGE.cpp" />
+    <ClCompile Include="REQ_MOVE.cpp" />
     <ClCompile Include="Packet.cpp" />
     <ClCompile Include="PK_DATA.cpp" />
+    <ClCompile Include="REQ_CON.cpp" />
+    <ClCompile Include="REQ_DISCON.cpp" />
     <ClCompile Include="VarCharPacket.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ACK_CON.h" />
+    <ClInclude Include="ACK_DISCON.h" />
+    <ClInclude Include="ACK_MOVE.h" />
     <ClInclude Include="BufferReader.h" />
     <ClInclude Include="BufferWriter.h" />
-    <ClInclude Include="MovePacket.h" />
+    <ClInclude Include="CHAT_MESSAGE.h" />
+    <ClInclude Include="REQ_MOVE.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="Packet_Include.h" />
     <ClInclude Include="PK_DATA.h" />
-    <ClInclude Include="Util.h" />
+    <ClInclude Include="REQ_CON.h" />
+    <ClInclude Include="REQ_DISCON.h" />
     <ClInclude Include="VarCharPacket.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
