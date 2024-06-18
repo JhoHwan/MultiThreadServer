@@ -98,5 +98,8 @@
     <ClInclude Include="ACK_MOVE.h">
       <Filter>헤더 파일\Packet</Filter>
     </ClInclude>
+    <ClInclude Include="BufferStream.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

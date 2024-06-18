@@ -18,8 +18,8 @@ public:
 		SetSize(DefaultPacketSize + data.length() + 1);
 	}
 
-	virtual void PacketToBuffer(char* outBuffer) const override;
-	virtual void BufferToPacket(const char* inBuffer) override;
+	virtual void Serialize(char* outBuffer) const override;
+	virtual void Deserialize(const char* inBuffer) override;
 
 	bool IsValid(const char* buffer) const override;
 

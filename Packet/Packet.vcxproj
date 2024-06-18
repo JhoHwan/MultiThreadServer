@@ -145,6 +145,7 @@
     <ClInclude Include="ACK_DISCON.h" />
     <ClInclude Include="ACK_MOVE.h" />
     <ClInclude Include="BufferReader.h" />
+    <ClInclude Include="BufferStream.h" />
     <ClInclude Include="BufferWriter.h" />
     <ClInclude Include="CHAT_MESSAGE.h" />
     <ClInclude Include="REQ_MOVE.h" />

@@ -10,6 +10,7 @@
 #include <thread>
 
 #include "Packet_Include.h"
+#include "ChatWindow.h"
 
 #define SERVERIP   "127.0.0.1"
 #define SERVERPORT 9000
@@ -21,6 +22,8 @@ private:
     BufferReader reader;
     BufferWriter writer;
 
+    ChatWindow* display;
+
     SOCKET sock;
 
     std::map<EPacketType, std::function<void(const char*)>> packetFuncMap;
@@ -29,6 +32,9 @@ private:
 
 private:
     std::string userId;
+
+
+
 public:
     inline void SetUserId(const std::string& newId) { userId = newId; }
     inline const std::string& GetUserId() const { return userId; }
@@ -45,8 +51,10 @@ public:
 private:
     void SendPacket(const Packet& packet);
     void PacketReciver();
+    void InputProcesser();
 
-    std::thread packetReciveThread;
+    std::thread ReciveProcessThread;
+    std::thread InputProcessThread;
 
     void ProcessPK_DATA(const char* buffer);
     void ProcessACK_CON(const char* buffer);

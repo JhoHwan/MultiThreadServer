@@ -19,7 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ChatWindow.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="ClientProcess.cpp" />
     <ClCompile Include="client_main.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\13\source\repos\Server_hw1\Server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -30,6 +32,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChatWindow.h" />
     <ClInclude Include="Client.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

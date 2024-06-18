@@ -38,6 +38,6 @@ public:
 	inline const std::string& GetId() const { return id; }
 	inline const std::string& GetMessageString() const { return message; }
 
-	virtual void BufferToPacket(const char* inBuffer) override;
+	virtual void Deserialize(const char* inBuffer) override;
 };
 

@@ -326,6 +326,7 @@ void Server::ProcessREQ_MOVE(const SOCKET& clientSock, const char* buffer)
     getpeername(clientSock, (SOCKADDR*)&clientaddr, &addrlen);
 
     mapMutex.lock();
+
     std::string id = clientIdMap[clientSock];
 
     ACK_MOVE packet(id, pos);
@@ -336,6 +337,7 @@ void Server::ProcessREQ_MOVE(const SOCKET& clientSock, const char* buffer)
             continue;
         SendPacket(pair.first, packet);
     }
+
     mapMutex.unlock();
 
 
@@ -363,8 +365,6 @@ void Server::ProcessCHAT_MESSAGE(const SOCKET& clientSock, const char* buffer)
 
     for (auto pair : clientIdMap)
     {
-        if (pair.first == clientSock)
-            continue;
         SendPacket(pair.first, recvPacket);
     }
 

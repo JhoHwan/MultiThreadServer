@@ -8,7 +8,6 @@ public:
 	REQ_CON();
 	REQ_CON(const std::string& inId);
 
-
 	~REQ_CON() {}
 };
 

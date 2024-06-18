@@ -32,7 +32,7 @@ public:
 	inline const std::string& GetId() { return id; }
 	inline const Vector3& GetPos() { return pos; }
 
-	virtual void BufferToPacket(const char* inBuffer) override;
+	virtual void Deserialize(const char* inBuffer) override;
 
 };
 

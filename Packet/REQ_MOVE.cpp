@@ -8,7 +8,7 @@ REQ_MOVE::REQ_MOVE(const Vector3& pos) : Packet(EPacketType::req_move, DefaultPa
 {
 }
 
-void REQ_MOVE::PacketToBuffer(char* outBuffer) const
+void REQ_MOVE::Serialize(char* outBuffer) const
 {
 	MakeDefaultBuffer(outBuffer);
 
@@ -17,7 +17,7 @@ void REQ_MOVE::PacketToBuffer(char* outBuffer) const
 	memcpy(outBuffer + 3 + sizeof(int) * 2, &(pos.z), sizeof(int));
 }
 
-void REQ_MOVE::BufferToPacket(const char* inBuffer)
+void REQ_MOVE::Deserialize(const char* inBuffer)
 {
 	int temp = 0;
 

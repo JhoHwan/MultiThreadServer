@@ -17,9 +17,9 @@ void ACK_MOVE::SetData(const std::string& newId, const Vector3& newPos)
 	SetData();
 }
 
-void ACK_MOVE::BufferToPacket(const char* inBuffer)
+void ACK_MOVE::Deserialize(const char* inBuffer)
 {
-	VarCharPacket::BufferToPacket(inBuffer);
+	VarCharPacket::Deserialize(inBuffer);
 	std::string data = GetData();
 	std::string posBuf = data.substr(0, 11);
 	std::string newId = data.substr(13);

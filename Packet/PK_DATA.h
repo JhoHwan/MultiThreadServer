@@ -19,8 +19,8 @@ public:
 	void SetData(const char* inData);
 
 	// 순수 가상함수 구현
-	virtual void PacketToBuffer(char* outBuffer) const override;
-	virtual void BufferToPacket(const char* inBuffer) override;
+	virtual void Serialize(char* outBuffer) const override;
+	virtual void Deserialize(const char* inBuffer) override;
 
 	virtual ~PK_DATA() override {}
 };

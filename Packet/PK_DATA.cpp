@@ -21,13 +21,13 @@ void PK_DATA::SetData(const char* inData)
 	strcpy_s(data, inData);
 }
 
-void PK_DATA::PacketToBuffer(char* outBuffer) const
+void PK_DATA::Serialize(char* outBuffer) const
 {
 	Packet::MakeDefaultBuffer(outBuffer);
 	memcpy(outBuffer + 3, data, 20);
 }
 
-void PK_DATA::BufferToPacket(const char* inBuffer)
+void PK_DATA::Deserialize(const char* inBuffer)
 {
 	// 들어온 데이터의 크기가 20보다 크면 오류 출력
 	char bufferData[20] = { 0, };

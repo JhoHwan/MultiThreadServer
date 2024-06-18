@@ -3,5 +3,5 @@
 
 void BufferWriter::operator()(const Packet& source, char* dest)
 {
-	source.PacketToBuffer(dest);
+	source.Serialize(dest);
 }

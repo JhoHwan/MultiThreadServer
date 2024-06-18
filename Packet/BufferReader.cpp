@@ -23,5 +23,5 @@ void BufferReader::operator()(const char* source, Packet* dest)
 	/*if (!dest->IsValid(source)) 
 		throw "Packet is Invalid";*/
 
-	dest->BufferToPacket(source);
+	dest->Deserialize(source);
 }

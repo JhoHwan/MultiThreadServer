@@ -2,13 +2,17 @@
 #include <sstream>
 #include <cstring>
 #include <algorithm> 
+#include "ChatWindow.h" 
 
 bool is_digits_only(const std::string& s) {
     return std::all_of(s.begin(), s.end(), ::isdigit);
 }
 
-Client::Client() : run(false)
+Client::Client() : run(false), display(nullptr)
 {
+    ZeroMemory(&sock, sizeof(SOCKET));
+    display = new ChatWindow();
+
     packetFuncMap.emplace(EPacketType::PK_DATA, std::bind(&Client::ProcessPK_DATA, this, std::placeholders::_1));
     packetFuncMap.emplace(EPacketType::ack_con, std::bind(&Client::ProcessACK_CON, this, std::placeholders::_1));
     packetFuncMap.emplace(EPacketType::ack_discon, std::bind(&Client::ProcessACK_DISCON, this, std::placeholders::_1));
@@ -44,18 +48,33 @@ void Client::Connect()
     }
    
 
-    REQ_CON req_con(GetUserId().c_str());
+    REQ_CON req_con(GetUserId());
     SendPacket(req_con);
 
     run = true;
 
-    packetReciveThread = std::thread(&Client::PacketReciver, this);
-    packetReciveThread.detach();
+    display->init();
 
-    std::cout << "Server connect success!" << std::endl;
+    ReciveProcessThread = std::thread(&Client::PacketReciver, this);
+    ReciveProcessThread.detach();
+
+    InputProcessThread = std::thread(&Client::InputProcesser, this);
+    InputProcessThread.detach();
+
+    //display->DrawMessage("Server connect success!");
 }
 
 void Client::Run()
+{
+    while (run)
+    {
+        
+    }
+    REQ_DISCON packet(GetUserId());
+    SendPacket(packet);
+}
+
+void Client::InputProcesser()
 {
     std::string message;
     
@@ -63,14 +82,32 @@ void Client::Run()
     {
         std::cin.clear();
         std::getline(std::cin, message);
-        
+        display->ClearLine(18);
 
+
+        if (message == "/exit")
+        {
+            run = false;
+            break;
+        }
+
+        else if (message.find("/move") != std::string::npos)
+        {
+            std::istringstream iss(message);
+            std::string a, x, y, z, b;
+            iss >> a >> x >> y >> z >> b;
+            if (a != "/move") continue;
+            if (x.empty() || y.empty() || z.empty() || !b.empty())
+            {
+                display->DrawMessage("[Error] : Please Enter /move x y z format!");
+                continue;
             }
             if (!is_digits_only(x) || !is_digits_only(y) || !is_digits_only(z))
             {
-                std::cout << "Please enter only numbers in x y z!"<< std::endl;
+                display->DrawMessage("[Error] : Please enter only numbers in x y z!");
                 continue;
             }
+
             int nx, ny, nz = 0;
             nx = atoi(x.c_str());
             ny = atoi(y.c_str());
@@ -79,17 +116,18 @@ void Client::Run()
             Vector3 pos(nx, ny, nz);
             REQ_MOVE packet(pos);
             SendPacket(packet);
+            
+            display->DrawMessage("I move to [%d, %d, %d] ", nx, ny, nz);
 
-            continue;
         }
+        else
+        {
+            CHAT_MESSAGE packet(GetUserId(), message);
 
-        CHAT_MESSAGE packet(GetUserId(), message);
-        SendPacket(packet);
-
+            SendPacket(packet);
+        }
+        
     }
-
-    REQ_DISCON packet(GetUserId());
-    SendPacket(packet);
 }
 
 void Client::SendPacket(const Packet& packet)
@@ -130,57 +168,11 @@ void Client::PacketReciver()
     }
 }
 
-
-void Client::ProcessPK_DATA(const char* buffer)
-{
-    PK_DATA packet;
-    reader(buffer, &packet);
-    printf("[받은 데이터] %s\n", packet.GetData());
-}
-
-
-void Client::ProcessACK_CON(const char* buffer)
-{
-    ACK_CON packet;
-    reader(buffer, &packet);
-    std::string id = packet.GetData();
-    printf("[%s]님이 입장하였습니다.\n", id.c_str());
-}
-
-void Client::ProcessACK_DISCON(const char* buffer)
-{
-    ACK_DISCON packet;
-    reader(buffer, &packet);
-    std::string id = packet.GetData();
-    printf("[%s]님이 퇴장하였습니다.\n", id.c_str());
-}
-
-void Client::ProcessACK_MOVE(const char* buffer)
-{
-   ACK_MOVE packet;
-    reader(buffer, &packet);
-    std::string id = packet.GetId();
-    Vector3 pos = packet.GetPos();
-
-    printf("[%s] move to %d %d %d\n", id.c_str(), pos.x, pos.y, pos.z);
-}
-
-void Client::ProcessCHAT_MESSAGE(const char* buffer)
-{
-    CHAT_MESSAGE packet;
-    reader(buffer, &packet);
-    std::string id = packet.GetId();
-    std::string message = packet.GetMessageString();
-
-
-    printf("[%s]: %s\n", id.c_str(), message.c_str());
-}
-
 Client::~Client()
 {
     // closesocket()
     closesocket(sock);
-    packetReciveThread.~thread();
+    ReciveProcessThread.~thread();
     // 윈속 종료
     WSACleanup();
 }

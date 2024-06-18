@@ -11,9 +11,9 @@ CHAT_MESSAGE::CHAT_MESSAGE(const std::string& id, const std::string& inMessage) 
 	SetData();
 }
 
-void CHAT_MESSAGE::BufferToPacket(const char* inBuffer)
+void CHAT_MESSAGE::Deserialize(const char* inBuffer)
 {
-	VarCharPacket::BufferToPacket(inBuffer);
+	VarCharPacket::Deserialize(inBuffer);
 
 	std::istringstream iss(GetData());
 	std::string id, message;

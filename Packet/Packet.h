@@ -62,7 +62,7 @@ protected:
 	/// </summary>
 	/// <param name="buffer">패킷을 옮길 버퍼</param>
 	virtual void MakeDefaultBuffer(char* buffer) const;
-	inline void SetSize(unsigned short size) { header.size = size; }
+	inline virtual void SetSize(unsigned short size) { header.size = size; }
 
 public :
 	Packet(PacketHeader header);
@@ -87,13 +87,13 @@ public :
 	/// 패킷을 버퍼에 옮겨주는 함수(순수 가상함수)
 	/// </summary>
 	/// <param name="outBuffer">패킷을 옮길 버퍼</param>
-	virtual void PacketToBuffer(char* outBuffer) const = 0;
+	virtual void Serialize(char* outBuffer) const = 0;
 
 	/// <summary>
 	/// 버퍼에 값을 읽어 패킷에 옮겨주는 함수(순수 가상함수)
 	/// </summary>
 	/// <param name="inBuffer">읽어올 버퍼</param>
-	virtual void BufferToPacket(const char* inBuffer) = 0;
+	virtual void Deserialize(const char* inBuffer) = 0;
 
 	virtual ~Packet();
 };

@@ -12,6 +12,6 @@ public:
 
 	inline const Vector3& GetPos() const { return pos; }
 
-	virtual void PacketToBuffer(char* outBuffer) const override;
-	virtual void BufferToPacket(const char* inBuffer) override;
+	virtual void Serialize(char* outBuffer) const override;
+	virtual void Deserialize(const char* inBuffer) override;
 };

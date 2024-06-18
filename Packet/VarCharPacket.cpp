@@ -4,7 +4,7 @@ VarCharPacket::VarCharPacket(EPacketType inPacketType, std::string inData) :Pack
 {
 }
 
-void VarCharPacket::PacketToBuffer(char* outBuffer) const
+void VarCharPacket::Serialize(char* outBuffer) const
 {
 	MakeDefaultBuffer(outBuffer);
 	const char* packetData = data.c_str();
@@ -13,7 +13,7 @@ void VarCharPacket::PacketToBuffer(char* outBuffer) const
 	memset(outBuffer + 3 + data.length(), '\0', 1);
 }
 
-void VarCharPacket::BufferToPacket(const char* inBuffer)
+void VarCharPacket::Deserialize(const char* inBuffer)
 {
 	unsigned short bufferSize = 0;
 	memcpy(&bufferSize, inBuffer + 1, sizeof(unsigned short));
