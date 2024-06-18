@@ -80,7 +80,6 @@ void Client::InputProcesser()
     
     while (run)
     {
-        std::cin.clear();
         std::getline(std::cin, message);
         display->ClearLine(18);
 
