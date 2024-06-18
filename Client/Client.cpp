@@ -64,19 +64,7 @@ void Client::Run()
         std::cin.clear();
         std::getline(std::cin, message);
         
-        if (message == "/exit")
-            break;
 
-        if (message.find("/move") != std::string::npos)
-        {
-            std::istringstream iss(message);
-            std::string a, x, y, z, b;
-            iss >> a >> x >> y >> z >> b;
-            if (a != "/move") continue;
-            if (x.empty() || y.empty() || z.empty() || !b.empty())
-            {
-                std::cout << "Please Enter /move x y z format!" << std::endl;
-                continue;
             }
             if (!is_digits_only(x) || !is_digits_only(y) || !is_digits_only(z))
             {
